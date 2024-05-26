@@ -4,16 +4,18 @@
 #include <list>
 #include "task.h"
 
+using namespace std;
+
 // Class representing a to-do list
 class ToDoList {
 private:
-    std::list<Task> tasks;          // List of tasks
-    std::list<Task> removedTasks;   // List of removed tasks
-    std::list<Task> doneTasks;      // List of done tasks
+    list<Task> tasks;          // List of tasks
+    list<Task> removedTasks;   // List of removed tasks
+    list<Task> doneTasks;      // List of done tasks
 
 public:
     // Function to add a task
-    void addTask(const std::string& description);
+    void addTask(const string& description);
 
     // Function to remove a task by index
     void removeTask(int index);
@@ -36,7 +38,7 @@ public:
     // Function to return a removed task by index
     void returnRemovedTask(int index);
 
-    // Function to return a done task to not done
+    // Function to return a done task to not done status
     void returnDoneTask();
 
     // Function to clear all tasks
@@ -47,6 +49,9 @@ public:
 
     // Function to count the number of tasks
     int countTasks() const;
+
+    // Function to check if a task is done by index
+    void checkTaskDone(int index) const;
 };
 
 #endif // TODO_LIST_H
