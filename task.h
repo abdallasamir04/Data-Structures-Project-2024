@@ -3,15 +3,39 @@
 
 #include <string>
 
-// Task structure to represent individual tasks
-struct Task {
-    std::string description;
-    bool done;
-    bool removed;
-    Task* next;
+// Class representing a single task
+class Task {
+private:
+    std::string description; // Task description
+    bool done;               // Task completion status
+public:
+    // Constructor to initialize a task with a description
+    Task(const std::string& desc) : description(desc), done(false) {}
 
-    // Constructor
-    Task(const std::string& desc) : description(desc), done(false), removed(false), next(nullptr) {}
+    // Getter for the task description
+    std::string getDescription() const {
+        return description;
+    }
+
+    // Setter for the task description
+    void setDescription(const std::string& desc) {
+        description = desc;
+    }
+
+    // Check if the task is done
+    bool isDone() const {
+        return done;
+    }
+
+    // Mark the task as done
+    void markDone() {
+        done = true;
+    }
+
+    // Mark the task as not done
+    void markNotDone() {
+        done = false;
+    }
 };
 
-#endif
+#endif // TASK_H
