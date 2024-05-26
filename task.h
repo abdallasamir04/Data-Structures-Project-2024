@@ -3,22 +3,25 @@
 
 #include <string>
 
+using namespace std;
+
 // Class representing a single task
 class Task {
 private:
-    std::string description; // Task description
-    bool done;               // Task completion status
+    string description; // Task description
+    bool done;          // Task completion status
+
 public:
     // Constructor to initialize a task with a description
-    Task(const std::string& desc) : description(desc), done(false) {}
+    Task(const string& desc) : description(desc), done(false) {}
 
     // Getter for the task description
-    std::string getDescription() const {
+    string getDescription() const {
         return description;
     }
 
     // Setter for the task description
-    void setDescription(const std::string& desc) {
+    void setDescription(const string& desc) {
         description = desc;
     }
 
