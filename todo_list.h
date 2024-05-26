@@ -41,8 +41,10 @@ public:
     // Function to return a done task to not done status
     void returnDoneTask();
 
-    // Function to clear all tasks
-    void clearAllTasks();
+
+    // Function to delete all tasks
+    void deleteAllTasks();
+
 
     // Function to show all not done tasks
     void showNotDoneTasks() const;
