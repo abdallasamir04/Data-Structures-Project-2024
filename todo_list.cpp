@@ -126,12 +126,13 @@ void ToDoList::returnDoneTask() {
     doneTasks.erase(it);
 }
 
-// Clear all tasks, done tasks, and removed tasks
-void ToDoList::clearAllTasks() {
+// non-member function to delete all tasks, done tasks, and removed tasks.
+void ToDoList::deleteAllTasks() {
     tasks.clear();
     doneTasks.clear();
     removedTasks.clear();
 }
+
 
 // Show all tasks that are not done
 void ToDoList::showNotDoneTasks() const {
