@@ -20,7 +20,7 @@ int main() {
         cout << "7. Show Removed Tasks\n";
         cout << "8. Return Removed Task\n";
         cout << "9. Return Done Task\n";
-        cout << "10. Clear All Tasks\n";
+        cout << "10. Delete All Tasks\n";
         cout << "11. Show Not Done Tasks\n";
         cout << "12. Count Tasks\n";
         cout << "13. Check if Task is Done\n";
@@ -77,7 +77,7 @@ int main() {
                 todoList.returnDoneTask();
                 break;
             case 10:
-                todoList.clearAllTasks();
+                todoList.deleteAllTasks();
                 break;
             case 11:
                 todoList.showNotDoneTasks();
