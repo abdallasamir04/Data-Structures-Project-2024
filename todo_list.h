@@ -1,45 +1,36 @@
 #ifndef TODO_LIST_H
 #define TODO_LIST_H
 
-#include <iostream>
-#include <string>
+#include <list>
 #include "task.h"
 
-using namespace std;
-
+// Class representing a to-do list
 class ToDoList {
 private:
-    Task* head;
+    std::list<Task> tasks;          // List of tasks
+    std::list<Task> removedTasks;   // List of removed tasks
+    std::list<Task> doneTasks;      // List of done tasks
 
 public:
-    // Constructor
-    ToDoList();
-
-    // Destructor
-    ~ToDoList();
-
-    // Function to add a new task to the list
+    // Function to add a task
     void addTask(const std::string& description);
 
-    // Function to remove a task from the list by index
+    // Function to remove a task by index
     void removeTask(int index);
 
-    // Function to display the To-Do List
+    // Function to display all tasks
     void displayTasks() const;
 
-    // Function to check if a task is done by index
-    bool isTaskDone(int index) const;
-
-    // Function to mark a task as done by index
+    // Function to mark a task as done
     void markTaskDone();
 
-    // Function to edit the description of a task
+    // Function to edit a task description by index
     void editTaskDescription(int index);
 
-    // Function to show done tasks
+    // Function to show all done tasks
     void showDoneTasks() const;
 
-    // Function to show removed tasks
+    // Function to show all removed tasks
     void showRemovedTasks() const;
 
     // Function to return a removed task by index
@@ -50,6 +41,12 @@ public:
 
     // Function to clear all tasks
     void clearAllTasks();
+
+    // Function to show all not done tasks
+    void showNotDoneTasks() const;
+
+    // Function to count the number of tasks
+    int countTasks() const;
 };
 
-#endif
+#endif // TODO_LIST_H
