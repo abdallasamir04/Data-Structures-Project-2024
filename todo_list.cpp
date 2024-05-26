@@ -4,7 +4,7 @@
 using namespace std;
 
 // Add a task to the to-do list
-void ToDoList::addTask(const std::string& description) {
+void ToDoList::addTask(const string& description) {
     tasks.emplace_back(description);
 }
 
@@ -152,4 +152,16 @@ void ToDoList::showNotDoneTasks() const {
 // Count the number of tasks in the main list
 int ToDoList::countTasks() const {
     return tasks.size();
+}
+
+// Check if a task is done by index
+void ToDoList::checkTaskDone(int index) const {
+    if (index <= 0 || index > tasks.size()) {
+        cout << "Invalid index.\n";
+        return;
+    }
+    auto it = tasks.begin();
+    advance(it, index - 1);
+    cout << "Task " << index << " (" << it->getDescription() << ") is "
+         << (it->isDone() ? "Done" : "Not Done") << ".\n";
 }
