@@ -1,178 +1,155 @@
 #include "todo_list.h"
+#include <iostream>
 
-ToDoList::ToDoList() : head(nullptr) {}
+using namespace std;
 
-ToDoList::~ToDoList() {
-    Task* current = head;
-    while (current) {
-        Task* temp = current;
-        current = current->next;
-        delete temp;
-    }
-}
-
+// Add a task to the to-do list
 void ToDoList::addTask(const std::string& description) {
-    Task* newTask = new Task(description);
-    newTask->next = head;
-    head = newTask;
+    tasks.emplace_back(description);
 }
 
+// Remove a task by index
 void ToDoList::removeTask(int index) {
-    Task* current = head;
-    Task* prev = nullptr;
-    int currentIndex = 1;
-
-    while (current) {
-        if (currentIndex == index) {
-            current->removed = true;
-            return;
-        }
-        prev = current;
-        current = current->next;
-        ++currentIndex;
-    }
-    cout << "Task with index " << index << " not found.\n";
-}
-
-void ToDoList::displayTasks() const {
-    if (!head) {
-        cout << "No tasks\n";
+    if (index <= 0 || index > tasks.size()) {
+        cout << "Invalid index.\n";
         return;
     }
+    auto it = tasks.begin();
+    advance(it, index - 1);
+    removedTasks.push_back(*it);
+    tasks.erase(it);
+}
 
-    Task* current = head;
-    int index = 1;
-    while (current) {
-        if (!current->removed) {
-            cout << index << ". " << current->description;
-            if (current->done) {
-                cout << " (Done)";
-            } else {
-                cout << " (Not Done)";
-            }
-            cout << endl;
-        }
-        current = current->next;
-        ++index;
+// Display all tasks with their status
+void ToDoList::displayTasks() const {
+    if (tasks.empty()) {
+        cout << "No tasks available.\n";
+        return;
+    }
+    cout << "Current To-Do List:\n";
+    int i = 1;
+    for (const auto& task : tasks) {
+        cout << i << ". " << task.getDescription() << (task.isDone() ? " (Done)" : " (Not Done)") << endl;
+        i++;
     }
 }
 
-bool ToDoList::isTaskDone(int index) const {
-    Task* current = head;
-    int currentIndex = 1;
-    while (current) {
-        if (currentIndex == index) {
-            return current->done;
-        }
-        current = current->next;
-        ++currentIndex;
-    }
-    cout << "Task with index " << index << " not found.\n";
-    return false;
-}
-
+// Mark a task as done by index
 void ToDoList::markTaskDone() {
     displayTasks();
+    if (tasks.empty()) return;
+
     int index;
     cout << "Enter the index of the task to mark as done: ";
     cin >> index;
-
-    Task* current = head;
-    int currentIndex = 1;
-    while (current) {
-        if (currentIndex == index) {
-            current->done = true;
-            return;
-        }
-        current = current->next;
-        ++currentIndex;
+    if (index <= 0 || index > tasks.size()) {
+        cout << "Invalid index.\n";
+        return;
     }
-    cout << "Task with index " << index << " not found.\n";
+    auto it = tasks.begin();
+    advance(it, index - 1);
+    it->markDone();
+    doneTasks.push_back(*it);
 }
 
+// Edit a task description by index
 void ToDoList::editTaskDescription(int index) {
-    Task* current = head;
-    int currentIndex = 1;
-    while (current) {
-        if (currentIndex == index) {
-            string newDescription;
-            cout << "Enter new description for task " << index << ": ";
-            cin.ignore();
-            getline(cin, newDescription);
-            current->description = newDescription;
-            return;
-        }
-        current = current->next;
-        ++currentIndex;
+    if (index <= 0 || index > tasks.size()) {
+        cout << "Invalid index.\n";
+        return;
     }
-    cout << "Task with index " << index << " not found.\n";
+    auto it = tasks.begin();
+    advance(it, index - 1);
+    string newDescription;
+    cout << "Enter new description: ";
+    cin.ignore();
+    getline(cin, newDescription);
+    it->setDescription(newDescription);
 }
 
+// Show all tasks marked as done
 void ToDoList::showDoneTasks() const {
-    Task* current = head;
-    int index = 1;
-    while (current) {
-        if (current->done) {
-            cout << index << ". " << current->description << " (Done)\n";
-        }
-        current = current->next;
-        ++index;
+    if (doneTasks.empty()) {
+        cout << "No done tasks.\n";
+        return;
+    }
+    cout << "Done Tasks:\n";
+    int i = 1;
+    for (const auto& task : doneTasks) {
+        cout << i << ". " << task.getDescription() << " (Done)" << endl;
+        i++;
     }
 }
 
+// Show all removed tasks
 void ToDoList::showRemovedTasks() const {
-    Task* current = head;
-    int index = 1;
-    while (current) {
-        if (current->removed) {
-            cout << index << ". " << current->description << " (Removed)\n";
-        }
-        current = current->next;
-        ++index;
+    if (removedTasks.empty()) {
+        cout << "No removed tasks.\n";
+        return;
+    }
+    cout << "Removed Tasks:\n";
+    int i = 1;
+    for (const auto& task : removedTasks) {
+        cout << i << ". " << task.getDescription() << endl;
+        i++;
     }
 }
 
+// Return a removed task to the main list by index
 void ToDoList::returnRemovedTask(int index) {
-    Task* current = head;
-    int currentIndex = 1;
-
-    while (current) {
-        if (currentIndex == index) {
-            current->removed = false;
-            return;
-        }
-        current = current->next;
-        ++currentIndex;
+    if (index <= 0 || index > removedTasks.size()) {
+        cout << "Invalid index.\n";
+        return;
     }
-    cout << "Task with index " << index << " not found.\n";
+    auto it = removedTasks.begin();
+    advance(it, index - 1);
+    tasks.push_back(*it);
+    removedTasks.erase(it);
 }
 
+// Return a done task to not done status
 void ToDoList::returnDoneTask() {
     showDoneTasks();
+    if (doneTasks.empty()) return;
+
     int index;
     cout << "Enter the index of the task to mark as not done: ";
     cin >> index;
-
-    Task* current = head;
-    int currentIndex = 1;
-    while (current) {
-        if (currentIndex == index) {
-            current->done = false;
-            return;
-        }
-        current = current->next;
-        ++currentIndex;
+    if (index <= 0 || index > doneTasks.size()) {
+        cout << "Invalid index.\n";
+        return;
     }
-    cout << "Task with index " << index << " not found.\n";
+    auto it = doneTasks.begin();
+    advance(it, index - 1);
+    it->markNotDone();
+    tasks.push_back(*it);
+    doneTasks.erase(it);
 }
 
+// Clear all tasks, done tasks, and removed tasks
 void ToDoList::clearAllTasks() {
-    Task* current = head;
-    while (current) {
-        Task* temp = current;
-        current = current->next;
-        delete temp;
+    tasks.clear();
+    doneTasks.clear();
+    removedTasks.clear();
+}
+
+// Show all tasks that are not done
+void ToDoList::showNotDoneTasks() const {
+    if (tasks.empty()) {
+        cout << "No tasks available.\n";
+        return;
     }
-    head = nullptr;
-    cout << "All tasks cleared.\n";
+    cout << "Not Done Tasks:\n";
+    int i = 1;
+    for (const auto& task : tasks) {
+        if (!task.isDone()) {
+            cout << i << ". " << task.getDescription() << " (Not Done)" << endl;
+        }
+        i++;
+    }
+}
+
+// Count the number of tasks in the main list
+int ToDoList::countTasks() const {
+    return tasks.size();
 }
